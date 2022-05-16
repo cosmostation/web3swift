@@ -2,7 +2,7 @@ def import_pods
   pod 'Starscream', '3.1.0'
   pod 'PromiseKit', '6.8.4'
   pod 'BigInt', '3.1'
-  pod 'CryptoSwift', '1.0.0'
+  pod 'CryptoSwift', '1.4.0'
   pod 'secp256k1_swift', '1.0.3', :modular_headers => true
 end
 
