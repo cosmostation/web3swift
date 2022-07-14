@@ -23,6 +23,8 @@ public struct EthereumTransaction: CustomStringConvertible {
     public var v: BigUInt = BigUInt(1)
     public var r: BigUInt = BigUInt(0)
     public var s: BigUInt = BigUInt(0)
+    public var maxPriorityFeePerGas: BigUInt = BigUInt(0)
+    public var maxFeePerGas: BigUInt = BigUInt(0)
     var chainID: BigUInt? = nil
     
     public var inferedChainID: BigUInt? {
@@ -68,6 +70,17 @@ public struct EthereumTransaction: CustomStringConvertible {
         self.value = value
         self.data = data
         self.to = to
+    }
+    
+    public init(gasPrice: BigUInt, gasLimit: BigUInt, to: EthereumAddress, value: BigUInt, data: Data, maxPriorityFeePerGas: BigUInt, maxFeePerGas: BigUInt) {
+        self.nonce = BigUInt(0)
+        self.gasPrice = gasPrice
+        self.gasLimit = gasLimit
+        self.value = value
+        self.data = data
+        self.to = to
+        self.maxPriorityFeePerGas = maxPriorityFeePerGas
+        self.maxFeePerGas = maxFeePerGas
     }
     
     
@@ -166,11 +179,11 @@ public struct EthereumTransaction: CustomStringConvertible {
     public func encode(forSignature:Bool = false, chainID: BigUInt? = nil) -> Data? {
         if (forSignature) {
             if chainID != nil  {
-                let fields = [self.nonce, self.gasPrice, self.gasLimit, self.to.addressData, self.value!, self.data, chainID!, BigUInt(0), BigUInt(0)] as [AnyObject]
+                let fields = [self.nonce, self.gasPrice, self.gasLimit, self.to.addressData, self.value!, self.data, chainID!, maxPriorityFeePerGas, maxFeePerGas] as [AnyObject]
                 return RLP.encode(fields)
             }
             else if self.chainID != nil  {
-                let fields = [self.nonce, self.gasPrice, self.gasLimit, self.to.addressData, self.value!, self.data, self.chainID!, BigUInt(0), BigUInt(0)] as [AnyObject]
+                let fields = [self.nonce, self.gasPrice, self.gasLimit, self.to.addressData, self.value!, self.data, self.chainID!, maxPriorityFeePerGas, maxFeePerGas] as [AnyObject]
                 return RLP.encode(fields)
             } else {
                 let fields = [self.nonce, self.gasPrice, self.gasLimit, self.to.addressData, self.value!, self.data] as [AnyObject]
