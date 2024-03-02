@@ -192,6 +192,11 @@ public struct EthereumTransaction: CustomStringConvertible {
         guard var txParams = transaction.encodeAsDictionary(from: from) else { return nil }
         if method == .estimateGas || transactionOptions?.gasLimit == nil {
             txParams.gas = nil
+            txParams.gasPrice = nil
+        }
+        if method == .getBalance {
+            txParams.gas = nil
+            txParams.gasPrice = nil
         }
         var params = [txParams] as [Encodable]
         if method.requiredNumOfParameters == 2 && onBlock != nil {
